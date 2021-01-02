@@ -1,15 +1,17 @@
 const leadTime = 1;
 const now = new Date();
-const next = new Date();
+var next = new Date();
 
 // Daily cut off time
-const cutoffTimeHours = 17; // The hour, in 24HR clock format
+const cutoffTimeHours = 15; // The hour, in 24HR clock format
 const cutoffTimeMinutes = 0; // Minutes - value between 0 and 59
 
 // set 'next' var time to cutoff time
 next.setHours(cutoffTimeHours);
 next.setMinutes(cutoffTimeMinutes);
 next.setSeconds(0);
+
+const nonDespatchDays = ['2020-12-25', '2021-01-04'];
 
 /**
  * @param {*} cutoffTime - Calculate and return the time remaining between 'cutoffTime' and now.
@@ -64,41 +66,48 @@ function initializeClock(id, cutoffTime) {
  * @param {object} dateObject
  * @param {bool} time - Include time, or not
  */
-function convertDateTimeToIsoString(dateObject, time=false) {
-  let timeStr = (time==true) ? -9:10;
+function convertDateTimeToIsoString(dateObject, time = false) {
+  let timeStr = time == true ? -9 : 10;
   return dateObject.toISOString().replace('T', ' ').slice(0, timeStr);
 }
 
+/**
+ * Get and return the next valid despatch date
+ */
+function getNextDespatchDate(nextDespatchDate) {
+  let isWeekend = false;
+  let isNonDespatchDay = false;
+
+  // Check if current despatch date is a weekend
+  if (nextDespatchDate.getDay() == 6 || nextDespatchDate.getDay() == 0) {
+    isWeekend = true;
+    nextDespatchDate.setDate(nextDespatchDate.getDate() + 1);
+  }
+
+  // Check if current despatch date is a non-despatch day
+  if (nonDespatchDays.includes(convertDateTimeToIsoString(nextDespatchDate))) {
+    console.log('FOUND A DATE TO AVOID!!!');
+    isNonDespatchDay = true;
+    nextDespatchDate.setDate(nextDespatchDate.getDate() + 1);
+  }
+
+  if (isWeekend == true || isNonDespatchDay == true) {
+    nextDespatchDate = getNextDespatchDate(nextDespatchDate);
+  }
+
+  return nextDespatchDate;
+}
 
 // if cutoff time has passed for today, set cutoff day to tomorrow
 if (now - next > 0) {
   next.setDate(next.getDate() + 1);
 }
 
-// If a weekend day, set date to following Monday
-if (next.getDay() == 6) {
-  // If it's Saturday, add 1 day
-  next.setDate(next.getDate() + 2);
-}
-if (next.getDay() == 0) {
-  // If it's Sunday, add 1 day
-  next.setDate(next.getDate() + 1);
-}
-
-// THEN check if it's a date that should be skipped
-nonDespatchDay = ['2020-12-25', '2021-01-04'];
-
-if (nonDespatchDay.includes(convertDateTimeToIsoString(next))) {
-  console.log('FOUND A DATE TO AVOID!!!');
-}
-
-
-
+next = getNextDespatchDate(next);
 
 const nextCutoff = convertDateTimeToIsoString(next, true);
 
 initializeClock('countdown', nextCutoff);
-
 
 // Debugging //
 console.log('-----------');
