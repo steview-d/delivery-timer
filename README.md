@@ -5,7 +5,7 @@ Simple JS script to calculate delivery cut off times
 ## Usage Instructions
 <small>(work in progress)</small>
 
-Call the script from any page to add an element that displays how much time remians to place an order, and on what day it can be expected to arrive.
+Call the script from any page to add an element that displays how much time remains to place an order, and on what day it can be expected to arrive.
 <br><br>
 
 ## The following data should be provided
