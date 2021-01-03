@@ -134,7 +134,7 @@ function getNextDeliveryDate(nextDeliveryDate) {
 }
 
 /**
- *
+ * Display date as Day Month Date
  * @param {*} dateStr
  */
 function formatDeliveryDate(dateStr) {
