@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
+
+body {
+    font-family: Karla, sans-serif;
+}
+
 #delivery-timer {
     /* Temp only, to position element */
     width: 400px;
@@ -15,4 +21,11 @@
 .timer-container p {
     text-align: center;
     margin: 0;
+}
+
+.timer-container p span {
+    text-align: center;
+    margin: 0;
+    color: #29A69C;
+    font-weight: bold;
 }
