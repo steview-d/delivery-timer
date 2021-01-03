@@ -19,7 +19,11 @@ Call the script from any page to add an element that displays how much time remi
 ```
 ['2021-01-04', '2021-01-05', '2021-01-06', '2021-01-07']
 ```
-<br>
+
+`saturdayDespatch` - Set to false (default) if the warehouse does not despatch orders on a Saturday.
+
+`sundayDespatch` - Set to false (default) if the warehouse does not despatch orders on a Sunday.
+<br><br>
 
 ## The following data will be returned
 

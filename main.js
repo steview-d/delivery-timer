@@ -16,6 +16,10 @@ next.setSeconds(0);
 // other than weekends, which are automatically skipped
 const nonDespatchDays = ['2021-01-04', '2021-01-05', '2021-01-06', '2021-01-07'];
 
+// Set whether or not the warehouse will despatch goods on a weekend.
+const saturdayDespatch = false;
+const sundayDespatch = false;
+
 /**
  * @param {*} cutoffTime - Calculate and return the time remaining between 'cutoffTime' and now.
  */
@@ -83,8 +87,13 @@ function getNextDespatchDate(nextDespatchDate) {
   let isWeekend = false;
   let isNonDespatchDay = false;
 
-  // Check if current despatch date is a weekend
-  if (nextDespatchDate.getDay() == 6 || nextDespatchDate.getDay() == 0) {
+  // Check if current despatch day is a Saturday
+  if (nextDespatchDate.getDay() == 6 && saturdayDespatch == false) {
+    isWeekend = true;
+  }
+
+  // Check if current despatch day is a Sunday
+  if (nextDespatchDate.getDay() == 0 && sundayDespatch == false) {
     isWeekend = true;
   }
 
@@ -124,12 +133,13 @@ if (now - next > 0) {
 }
 
 next = getNextDespatchDate(next);
+var despatchDate = new Date(next.getTime())
 var deliveryDate = getNextDeliveryDate(next)
 
 initializeClock('countdown', next);
 
 // Debugging //
 console.log('-----------');
-console.log("NEXT: ", next);
+console.log("NEXT: ", despatchDate);
 console.log("DELIVERY: ", deliveryDate)
 console.log('-----------');
