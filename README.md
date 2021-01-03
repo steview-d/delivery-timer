@@ -31,4 +31,9 @@ Call the script from any page to add an element that displays how much time rema
 
 `deliveryDate` - The date the despatched order can be expected to arrive. Currently set to the day after despatch, accounting for weekends.
 
-These are returned as `Date` objects and can be used for countdowns and whatnot. 
+These are returned as `Date` objects and can be used for countdowns and whatnot.
+<br><br>
+
+## Countdown Timer
+`initializeClock(id, cutoffTime)` populates the element referenced by `id` with a countdown to show how long left to order, based on the 'cutoffTime' value and also shows an expected delivery date, based on a 1 day lead time with no weekend deliveries.
+
