@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,15 +13,15 @@
     <!-- CSS: Custom -->
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
+
 <body>
 
-    <h2 class="mb-5">Delivery Timer</h2>
-
-    <div id="countdown">
-            <h4>Days: <span class="days"></span></h4>
-            <h4>Hours: <span class="hours"></span></h4>
-            <h4>Minutes: <span class="minutes"></span></h4>
-            <h4>Seconds: <span class="seconds"></span></h4>
+    <div id="delivery-timer">
+        <div class="timer-container">
+            <div class="timer-inner">
+                <p>Order in <span class="days"></span> Day(s) <span class="hours"></span> hours <span class="minutes"></span> minutes for delivery on <span class="delivery"></span></p>
+            </div>
+        </div>
 
     </div>
 
@@ -41,4 +42,5 @@
     <!-- main app js -->
     <script src="main.js"></script>
 </body>
+
 </html>

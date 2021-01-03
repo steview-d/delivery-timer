@@ -14,7 +14,12 @@ next.setSeconds(0);
 
 // List all dates that orders will NOT be despatched from the warehouse,
 // other than weekends, which are automatically skipped
-const nonDespatchDays = ['2021-01-04', '2021-01-05', '2021-01-06', '2021-01-07'];
+const nonDespatchDays = [
+  '2021-01-04',
+  '2021-01-05',
+  '2021-01-06',
+  '2021-01-07',
+];
 
 // Set whether or not the warehouse will despatch goods on a weekend.
 const saturdayDespatch = false;
@@ -45,11 +50,11 @@ function getTimeRemaining(cutoffTime) {
  * @param {*} cutoffTime - The future date time to count down towards
  */
 function initializeClock(id, cutoffTime) {
-  const clock = document.getElementById(id);
-  const daysSpan = clock.querySelector('.days');
-  const hoursSpan = clock.querySelector('.hours');
-  const minutesSpan = clock.querySelector('.minutes');
-  const secondsSpan = clock.querySelector('.seconds');
+  const timer = document.getElementById(id);
+  const daysSpan = timer.querySelector('.days');
+  const hoursSpan = timer.querySelector('.hours');
+  const minutesSpan = timer.querySelector('.minutes');
+  const deliverySpan = timer.querySelector('.delivery');
 
   function updateCountdown() {
     const t = getTimeRemaining(cutoffTime);
@@ -57,13 +62,14 @@ function initializeClock(id, cutoffTime) {
     daysSpan.innerHTML = t.days;
     hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
     minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
     if (t.total <= 0) {
       clearInterval(timeinterval);
     }
   }
 
+  deliverySpan.innerHTML =
+    formatDeliveryDate(deliveryDate) + addDateSuffix(deliveryDate);
   const timeinterval = setInterval(updateCountdown, 1000);
   updateCountdown();
 }
@@ -116,7 +122,7 @@ function getNextDespatchDate(nextDespatchDate) {
  *                                    weekends.
  */
 function getNextDeliveryDate(nextDeliveryDate) {
-  deliveryDate = new Date(nextDeliveryDate.getTime())
+  deliveryDate = new Date(nextDeliveryDate.getTime());
   deliveryDate.setDate(deliveryDate.getDate() + 1);
 
   // Check if current despatch date is a weekend
@@ -124,7 +130,46 @@ function getNextDeliveryDate(nextDeliveryDate) {
     deliveryDate = getNextDeliveryDate(deliveryDate);
   }
 
-  return deliveryDate
+  return deliveryDate;
+}
+
+/**
+ *
+ * @param {*} dateStr
+ */
+function formatDeliveryDate(dateStr) {
+  var date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+/**
+ * Return the correct date suffix (st, nd, rd, th) depending on date
+ * @param {*} dateStr
+ */
+function addDateSuffix(dateStr) {
+  var date = new Date(dateStr);
+  d = date.toLocaleDateString('en-US', {
+    day: 'numeric'
+  });
+
+  const nth = function (d) {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  };
+  return nth();
 }
 
 // if cutoff time has passed for today, set cutoff day to tomorrow
@@ -133,13 +178,14 @@ if (now - next > 0) {
 }
 
 next = getNextDespatchDate(next);
-var despatchDate = new Date(next.getTime())
-var deliveryDate = getNextDeliveryDate(next)
+var despatchDate = new Date(next.getTime());
+var deliveryDate = getNextDeliveryDate(next);
 
-initializeClock('countdown', next);
+initializeClock('delivery-timer', next);
 
 // Debugging //
 console.log('-----------');
-console.log("NEXT: ", despatchDate);
-console.log("DELIVERY: ", deliveryDate)
+console.log('NEXT: ', despatchDate);
+console.log('DELIVERY: ', deliveryDate);
 console.log('-----------');
+console.log('Day Name: ', formatDeliveryDate(deliveryDate));

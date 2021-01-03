@@ -1,0 +1,18 @@
+#delivery-timer {
+    /* Temp only, to position element */
+    width: 400px;
+    margin: 50px auto;
+}
+
+.timer-container {
+    width:100%;
+    background-color: #EFFCFB;
+    border: 1px solid #29A69C;
+    border-radius: 4px;
+    padding: 8px 8px 10px;
+}
+
+.timer-container p {
+    text-align: center;
+    margin: 0;
+}
