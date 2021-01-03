@@ -4,7 +4,7 @@ const now = new Date();
 var next = new Date();
 
 // Daily cut off time
-const cutoffTimeHours = 15; // The hour, in 24HR clock format
+const cutoffTimeHours = 10; // The hour, in 24HR clock format
 const cutoffTimeMinutes = 0; // Minutes - value between 0 and 59
 
 // set 'next' var time to cutoff time
@@ -59,9 +59,9 @@ function initializeClock(id, cutoffTime) {
   function updateCountdown() {
     const t = getTimeRemaining(cutoffTime);
 
-    daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+    daysSpan.innerHTML = daysFormat(t.days);
+    hoursSpan.innerHTML = t.hours + pluralizeDuration(t.hours, 'hour');
+    minutesSpan.innerHTML = t.minutes + pluralizeDuration(t.minutes, 'minute');
 
     if (t.total <= 0) {
       clearInterval(timeinterval);
@@ -153,7 +153,7 @@ function formatDeliveryDate(dateStr) {
 function addDateSuffix(dateStr) {
   var date = new Date(dateStr);
   d = date.toLocaleDateString('en-US', {
-    day: 'numeric'
+    day: 'numeric',
   });
 
   const nth = function (d) {
@@ -170,6 +170,25 @@ function addDateSuffix(dateStr) {
     }
   };
   return nth();
+}
+
+function daysFormat(days) {
+  switch (true) {
+    case days == 0:
+      return ' ';
+    case days == 1:
+      return ' 1 Day,';
+    default:
+      return ` ${days} Days,`;
+  }
+}
+
+function pluralizeDuration(duration, text) {
+  var t = duration == 1 ? ` ${text}` : ` ${text}s`;
+  if (text.includes('hour')) {
+    t += ','
+  }
+  return t;
 }
 
 // if cutoff time has passed for today, set cutoff day to tomorrow
